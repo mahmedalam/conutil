@@ -1,8 +1,18 @@
 from PIL import Image, UnidentifiedImageError
 from concurrent.futures import ThreadPoolExecutor
+import pillow_avif
 import os
 
-SUPPORTED_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff')
+SUPPORTED_EXTENSIONS = (
+    '.png',
+    '.jpg',
+    '.jpeg',
+    '.webp',
+    ".avif",
+    '.bmp',
+    '.gif',
+    '.tiff',
+)
 
 
 def convert_image(input_image_path: str, output_image_path: str, format: str, quality: int = 90) -> None:
@@ -20,7 +30,13 @@ def convert_image(input_image_path: str, output_image_path: str, format: str, qu
     try:
         image = Image.open(input_image_path)
         output_image_path_with_extension = f"{os.path.splitext(output_image_path)[0]}.{format}"
-        image.save(output_image_path_with_extension, format=format, lossless=False, quality=quality)
+
+        if format.lower() == "jpg" or format.lower() == "jpeg":
+            image = image.convert("RGB")
+            format = "JPEG"
+
+        image.save(output_image_path_with_extension, format=format, quality=quality)
+        image.close()
     except FileNotFoundError as e:
         print(f"File not found: {e.filename}")
     except UnidentifiedImageError as e:

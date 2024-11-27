@@ -19,7 +19,7 @@ def cli():
 
     if args.input:
         if not os.path.isdir(args.input):
-            convert_image(args.input, args.output, args.output.split(".")[-1], args.quality)
+            convert_image(args.input, args.output, args.output.rsplit(".")[-1], args.quality)
         else:
             if args.output_format is None:
                 raise Exception("Output format is required when input is a directory.")
