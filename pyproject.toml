@@ -6,9 +6,12 @@ authors = ["Ahmed Alam <m.ahmed.g.1982@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = ">=3.13,<3.14"
 pillow = "^11.0.0"
 
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.11.1"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,3 +1,6 @@
 __pychache__
 .idea
 .venv
+build
+dist
+main.spec
