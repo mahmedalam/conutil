@@ -4,14 +4,15 @@ import pillow_avif
 import os
 
 SUPPORTED_EXTENSIONS = (
-    '.png',
-    '.jpg',
-    '.jpeg',
-    '.webp',
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
     ".avif",
-    '.bmp',
-    '.gif',
-    '.tiff',
+    ".bmp",
+    ".gif",
+    ".tif",
+    ".tiff",
 )
 
 
@@ -27,15 +28,23 @@ def convert_image(input_image_path: str, output_image_path: str, format: str, qu
     if not input_image_path.lower().endswith(SUPPORTED_EXTENSIONS):
         raise ValueError(f"Unsupported image format. Supported formats: {SUPPORTED_EXTENSIONS}")
 
+    format = format.upper()
+
     try:
         image = Image.open(input_image_path)
         output_image_path_with_extension = f"{os.path.splitext(output_image_path)[0]}.{format}"
 
-        if format.lower() == "jpg" or format.lower() == "jpeg":
+        if format == "JPG" or format == "JPEG":
             image = image.convert("RGB")
             format = "JPEG"
+        elif format == "TIF":
+            format = "TIFF"
 
-        image.save(output_image_path_with_extension, format=format, quality=quality)
+        if format == "AVIF":
+            image.save(output_image_path_with_extension, format=format)
+        else:
+            image.save(output_image_path_with_extension, format=format, quality=quality)
+
         image.close()
     except FileNotFoundError as e:
         print(f"File not found: {e.filename}")
