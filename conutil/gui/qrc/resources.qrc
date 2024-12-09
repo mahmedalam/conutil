@@ -1,0 +1,20 @@
+<RCC>
+  <qresource prefix="Icons">
+    <file>../icons/settings.svg</file>
+    <file>../icons/folder-input-white.svg</file>
+    <file>../icons/folder-plus-white.svg</file>
+    <file>../icons/image-plus-white.svg</file>
+    <file>../icons/power.svg</file>
+    <file>../icons/globe.svg</file>
+    <file>../icons/keyboard.svg</file>
+    <file>../icons/info.svg</file>
+    <file>../icons/folder-input.svg</file>
+    <file>../icons/folder-plus.svg</file>
+    <file>../icons/icon.ico</file>
+    <file>../icons/image-plus.svg</file>
+  </qresource>
+  <qresource prefix="Images">
+    <file>../../../../ConUtil Andriod.png</file>
+    <file>../images/logo.png</file>
+  </qresource>
+</RCC>
