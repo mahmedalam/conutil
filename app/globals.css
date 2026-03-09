@@ -124,10 +124,16 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply scroll-smooth;
+  }
+  section {
+    @apply max-w-150 w-full;
   }
   h1 {
     @apply max-w-4xl text-4xl md:text-5xl font-extrabold tracking-tight;
+  }
+  h2 {
+    @apply text-xl md:text-4xl font-bold tracking-tight;
   }
 }
 
