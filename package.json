@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check": "concurrently --names \"lint,typecheck,format\" --prefix-colors \"yellow,blue,green\" \"next lint\" \"tsc --noEmit\" \"npm run format:check\"",
+    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx,css}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx,css}\" --cache"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -25,8 +28,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "9.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "3.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
