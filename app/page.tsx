@@ -8,13 +8,10 @@ export default function Home() {
   const [images, setImages] = useState<File[]>([]);
 
   function handleDrop(acceptedFiles: File[]) {
-    const filterImages = (files: File[]) => {
-      return files.filter((file) => file.type.startsWith("image/"));
-    };
-
-    const filteredFiles = filterImages(acceptedFiles);
-
-    setImages(filteredFiles);
+    const filteredFiles = acceptedFiles.filter((file) =>
+      file.type.startsWith("image/"),
+    );
+    setImages((prev) => [...prev, ...filteredFiles]);
   }
 
   return (

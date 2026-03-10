@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -53,7 +55,7 @@ export default function ImageCarousel({ files }: { files: File[] }) {
         <Button
           variant="secondary"
           size="icon"
-          disabled={page === totalPages - 1}
+          disabled={page >= totalPages - 1 || files.length === 0}
           onClick={() => setPage((p) => p + 1)}
         >
           <ChevronRight />

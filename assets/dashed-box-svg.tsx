@@ -9,10 +9,10 @@ export default function DashedBoxSvg({ className }: { className?: string }) {
       )}
     >
       <rect
-        x="2"
-        y="2"
-        width="calc(100% - 4px)"
-        height="calc(100% - 4px)"
+        x="0.5%"
+        y="0.5%"
+        width="99%"
+        height="99%"
         strokeWidth="2"
         strokeDasharray="32,32" //<!-- dash length, gap -->
         rx="32"

@@ -25,9 +25,11 @@ export default function UploadBox({
           <span className="text-2xl tracking-[-0.6px] text-foreground/75 sm:text-3xl">
             or
           </span>
-          <Button className="w-fit h-">Choose Files</Button>
+          <Button className="w-fit">Choose Files</Button>
           <p className="text-muted-foreground">
-            Support’s JPEG, PNG, WebP, etc.
+            <p className="text-muted-foreground">
+              Supports JPEG, PNG, WebP, etc.
+            </p>
           </p>
           <div
             className={cn(
