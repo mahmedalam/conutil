@@ -1,6 +1,22 @@
+"use client";
+
+import ImageCarousel from "@/components/shared/image-carousel";
 import UploadBox from "@/components/shared/upload-box";
+import { useState } from "react";
 
 export default function Home() {
+  const [images, setImages] = useState<File[]>([]);
+
+  function handleDrop(acceptedFiles: File[]) {
+    const filterImages = (files: File[]) => {
+      return files.filter((file) => file.type.startsWith("image/"));
+    };
+
+    const filteredFiles = filterImages(acceptedFiles);
+
+    setImages(filteredFiles);
+  }
+
   return (
     <main className="min-h-screen container mx-auto flex flex-col items-center gap-11 px-4 py-11 md:p-14">
       {/* Hero Section */}
@@ -10,7 +26,10 @@ export default function Home() {
       </section>
       {/* Upload Box */}
       <section>
-        <UploadBox />
+        <UploadBox onDrop={handleDrop} />
+      </section>
+      <section>
+        <ImageCarousel files={images} />
       </section>
     </main>
   );
