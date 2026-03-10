@@ -130,13 +130,13 @@
     @apply max-w-150 w-full;
   }
   h1 {
-    @apply max-w-4xl text-4xl md:text-5xl font-extrabold tracking-tight text-center;
+    @apply max-w-4xl text-[2.5rem] sm:text-6xl md:text-7xl font-black tracking-tight text-center;
   }
   h2 {
     @apply text-3xl md:text-4xl font-bold tracking-tight text-center;
   }
   p {
-    @apply leading-5;
+    @apply max-w-150 leading-5 text-center;
   }
 }
 
@@ -149,5 +149,11 @@
   }
   .card {
     @apply bg-card px-5 py-11 space-y-8 border rounded-4xl;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    @apply leading-10;
   }
 }
