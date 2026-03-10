@@ -1,17 +1,34 @@
 "use client";
 
+import CompressionSettingsCard from "@/components/shared/compression-settings-card";
 import ImageCarousel from "@/components/shared/image-carousel";
 import UploadBox from "@/components/shared/upload-box";
+import { quickPresets } from "@/constants";
 import { useState } from "react";
 
 export default function Home() {
   const [images, setImages] = useState<File[]>([]);
+  const [initialSettings, setInitialSettings] = useState<TCompressionSettings>({
+    ...quickPresets[0],
+  });
+  const [loading, setLoading] = useState(false);
 
   function handleDrop(acceptedFiles: File[]) {
     const filteredFiles = acceptedFiles.filter((file) =>
       file.type.startsWith("image/"),
     );
     setImages((prev) => [...prev, ...filteredFiles]);
+  }
+
+  async function handleSettingsDone(settings: TCompressionSettings) {
+    // If no images are selected, return
+    if (images.length === 0) return;
+    setLoading(true);
+    setInitialSettings(settings);
+
+    // TODO: Compress images
+
+    setLoading(false);
   }
 
   return (
@@ -35,8 +52,16 @@ export default function Home() {
       <section>
         <UploadBox onDrop={handleDrop} />
       </section>
+      {/* Image Carousel */}
       <section>
         <ImageCarousel files={images} />
+      </section>
+      {/* Settings */}
+      <section>
+        <CompressionSettingsCard
+          initialSettings={initialSettings}
+          onDone={handleSettingsDone}
+        />
       </section>
     </main>
   );

@@ -31,3 +31,57 @@ export const footerLinks = [
     href: "/legal",
   },
 ];
+
+export const quickPresets = [
+  {
+    name: "Best",
+    quality: 80,
+    format: "jpeg",
+    maxWidth: "",
+    maxHeight: "",
+  },
+  {
+    name: "HD Best",
+    quality: 80,
+    format: "jpeg",
+    maxWidth: 1920,
+    maxHeight: 1920,
+  },
+  {
+    name: "2K Best",
+    quality: 80,
+    format: "jpeg",
+    maxWidth: 2560,
+    maxHeight: 2560,
+  },
+  {
+    name: "4K Best",
+    quality: 80,
+    format: "jpeg",
+    maxWidth: 3840,
+    maxHeight: 3840,
+  },
+  {
+    name: "Light",
+    quality: 70,
+    format: "jpeg",
+    maxWidth: 1280,
+    maxHeight: 1280,
+  },
+  {
+    name: "Heavy",
+    quality: 85,
+    format: "jpeg",
+    maxWidth: 3840,
+    maxHeight: 3840,
+  },
+  {
+    name: "Web Optimized",
+    quality: 75,
+    format: "webp",
+    maxWidth: 1920,
+    maxHeight: 1920,
+  },
+] as const;
+
+export const outputFormats = ["jpeg", "webp"] as const;
