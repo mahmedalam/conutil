@@ -130,10 +130,10 @@
     @apply max-w-150 w-full;
   }
   h1 {
-    @apply max-w-4xl text-[2.5rem] sm:text-6xl md:text-7xl font-black tracking-tight text-center;
+    @apply max-w-4xl text-[2.5rem] sm:text-6xl md:text-7xl font-black tracking-tight text-center uppercase;
   }
   h2 {
-    @apply text-3xl md:text-4xl font-bold tracking-tight text-center;
+    @apply text-3xl md:text-4xl font-bold tracking-tight text-center capitalize;
   }
   p {
     @apply max-w-150 leading-5 text-center;
@@ -148,7 +148,7 @@
     @apply flex flex-col items-center justify-center;
   }
   .card {
-    @apply bg-card px-5 py-11 space-y-8 border rounded-4xl;
+    @apply bg-card px-5 py-11 flex flex-col gap-8 border rounded-4xl md:p-14 md:gap-11;
   }
 }
 

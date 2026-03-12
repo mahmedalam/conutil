@@ -54,7 +54,7 @@ export default function Home() {
       </section>
       {/* Image Carousel */}
       <section>
-        <ImageCarousel files={images} />
+        <ImageCarousel files={images} type="original" />
       </section>
       {/* Settings */}
       <section>
@@ -62,6 +62,10 @@ export default function Home() {
           initialSettings={initialSettings}
           onDone={handleSettingsDone}
         />
+      </section>
+      {/* Results Carousel */}
+      <section>
+        <ImageCarousel files={images} type="compressed" />
       </section>
     </main>
   );
