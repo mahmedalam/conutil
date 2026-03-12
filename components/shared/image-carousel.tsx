@@ -15,8 +15,6 @@ export default function ImageCarousel({
   type: "original" | "compressed";
 }) {
   const [page, setPage] = useState(0);
-  const [urls, setUrls] = useState<string[]>([]);
-
   const totalPages = Math.ceil(files.length / PAGE_SIZE);
   const start = page * PAGE_SIZE;
   const visibleFiles = useMemo(
@@ -24,18 +22,21 @@ export default function ImageCarousel({
     [files, start],
   );
 
-  useEffect(() => {
-    const newUrls = visibleFiles.map((file) =>
-      file instanceof File
-        ? URL.createObjectURL(file)
-        : URL.createObjectURL(file.blob),
-    );
-    setUrls(newUrls);
+  const urls = useMemo(
+    () =>
+      visibleFiles.map((file) =>
+        file instanceof File
+          ? URL.createObjectURL(file)
+          : URL.createObjectURL(file.blob),
+      ),
+    [visibleFiles],
+  );
 
+  useEffect(() => {
     return () => {
-      newUrls.forEach((url) => URL.revokeObjectURL(url));
+      urls.forEach((url) => URL.revokeObjectURL(url));
     };
-  }, [visibleFiles]);
+  }, [urls]);
 
   return (
     <div className="card">
@@ -47,15 +48,20 @@ export default function ImageCarousel({
           return (
             <li key={i} className="relative">
               {/* Info Badge */}
-              <div className="absolute top-2 w-[calc(100%-16px)] flex items-center justify-between px-2 py-0.5 ml-2 bg-card/90 rounded-lg">
-                <span className="text-destructive text-base">-55%</span>
-                <span className="text-primary text-base">
-                  {formatFileSize(currentFile.size, 0)}
-                </span>
-              </div>
+              {!(currentFile instanceof File) && (
+                <div className="absolute top-2 w-[calc(100%-16px)] flex items-center justify-between px-2 py-0.5 ml-2 bg-card/90 rounded-lg">
+                  <span className="text-destructive text-base">
+                    -{currentFile.reductionPercentage}%
+                  </span>
+                  <span className="text-primary text-base">
+                    {formatFileSize(currentFile.size, 0)}
+                  </span>
+                </div>
+              )}
               {/* Image */}
               <img
                 src={url}
+                alt={currentFile.name}
                 className="w-full md:size-40 aspect-square object-cover rounded-lg"
               />
             </li>

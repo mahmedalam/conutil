@@ -132,7 +132,8 @@
   h1 {
     @apply max-w-4xl text-[2.5rem] sm:text-6xl md:text-7xl font-black tracking-tight text-center uppercase;
   }
-  h2 {
+  h2,
+  .h2 {
     @apply text-3xl md:text-4xl font-bold tracking-tight text-center capitalize;
   }
   p {
