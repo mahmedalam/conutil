@@ -2,7 +2,14 @@
 
 import { formatFileSize } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "../ui/button";
 
 const PAGE_SIZE = 6;
@@ -15,6 +22,9 @@ export default function ImageCarousel({
   type: "original" | "compressed";
 }) {
   const [page, setPage] = useState(0);
+  const instanceId = useId();
+  const urlCacheRef = useRef(new Map<string, string>());
+  const [urls, setUrls] = useState<string[]>([]);
   const totalPages = Math.ceil(files.length / PAGE_SIZE);
   const start = page * PAGE_SIZE;
   const visibleFiles = useMemo(
@@ -22,21 +32,43 @@ export default function ImageCarousel({
     [files, start],
   );
 
-  const urls = useMemo(
-    () =>
-      visibleFiles.map((file) =>
-        file instanceof File
-          ? URL.createObjectURL(file)
-          : URL.createObjectURL(file.blob),
-      ),
-    [visibleFiles],
+  const getFileKey = useCallback(
+    (file: File | TProcessedImage) => {
+      const prefix = `${instanceId}:${type}`;
+      if (file instanceof File) {
+        return `${prefix}:file:${file.name}:${file.size}:${file.lastModified}`;
+      }
+
+      return `${prefix}:processed:${file.name}:${file.size}:${file.type}`;
+    },
+    [instanceId, type],
   );
 
   useEffect(() => {
+    const cache = urlCacheRef.current;
+    const nextUrls = visibleFiles.map((file) => {
+      const key = getFileKey(file);
+      const cached = cache.get(key);
+      if (cached) return cached;
+      const url =
+        file instanceof File
+          ? URL.createObjectURL(file)
+          : URL.createObjectURL(file.blob);
+      cache.set(key, url);
+      return url;
+    });
+    setUrls(nextUrls);
+  }, [getFileKey, visibleFiles]);
+
+  useEffect(() => {
+    const cache = urlCacheRef.current;
     return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
+      for (const url of cache.values()) {
+        URL.revokeObjectURL(url);
+      }
+      cache.clear();
     };
-  }, [urls]);
+  }, []);
 
   return (
     <div className="card">
@@ -46,8 +78,7 @@ export default function ImageCarousel({
         {urls.map((url, i) => {
           const currentFile = visibleFiles[i];
           return (
-            <li key={i} className="relative">
-              {/* Info Badge */}
+            <li key={getFileKey(currentFile)} className="relative">
               {!(currentFile instanceof File) && (
                 <div className="absolute top-2 w-[calc(100%-16px)] flex items-center justify-between px-2 py-0.5 ml-2 bg-card/90 rounded-lg">
                   <span className="text-destructive text-base">
@@ -58,7 +89,6 @@ export default function ImageCarousel({
                   </span>
                 </div>
               )}
-              {/* Image */}
               <img
                 src={url}
                 alt={currentFile.name}
