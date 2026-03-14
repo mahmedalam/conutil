@@ -24,7 +24,9 @@ export default function ImageCarousel({
   const [page, setPage] = useState(0);
   const instanceId = useId();
   const urlCacheRef = useRef(new Map<string, string>());
-  const [urls, setUrls] = useState<string[]>([]);
+  const [items, setItems] = useState<
+    Array<{ file: File | TProcessedImage; url: string }>
+  >([]);
   const totalPages = Math.ceil(files.length / PAGE_SIZE);
   const start = page * PAGE_SIZE;
   const visibleFiles = useMemo(
@@ -46,18 +48,18 @@ export default function ImageCarousel({
 
   useEffect(() => {
     const cache = urlCacheRef.current;
-    const nextUrls = visibleFiles.map((file) => {
+    const nextItems = visibleFiles.map((file) => {
       const key = getFileKey(file);
       const cached = cache.get(key);
-      if (cached) return cached;
+      if (cached) return { file, url: cached };
       const url =
         file instanceof File
           ? URL.createObjectURL(file)
           : URL.createObjectURL(file.blob);
       cache.set(key, url);
-      return url;
+      return { file, url };
     });
-    setUrls(nextUrls);
+    setItems(nextItems);
   }, [getFileKey, visibleFiles]);
 
   useEffect(() => {
@@ -75,23 +77,22 @@ export default function ImageCarousel({
       <h2>{type === "original" ? "Added Images" : "Results"}</h2>
 
       <ul className="w-fit mx-auto grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-3">
-        {urls.map((url, i) => {
-          const currentFile = visibleFiles[i];
+        {items.map(({ file, url }) => {
           return (
-            <li key={getFileKey(currentFile)} className="relative">
-              {!(currentFile instanceof File) && (
+            <li key={getFileKey(file)} className="relative">
+              {!(file instanceof File) && (
                 <div className="absolute top-2 w-[calc(100%-16px)] flex items-center justify-between px-2 py-0.5 ml-2 bg-card/90 rounded-lg">
                   <span className="text-destructive text-base">
-                    -{currentFile.reductionPercentage}%
+                    -{file.reductionPercentage}%
                   </span>
                   <span className="text-primary text-base">
-                    {formatFileSize(currentFile.size, 0)}
+                    {formatFileSize(file.size, 0)}
                   </span>
                 </div>
               )}
               <img
                 src={url}
-                alt={currentFile.name}
+                alt={file.name}
                 className="w-full md:size-40 aspect-square object-cover rounded-lg"
               />
             </li>
